@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 
 test.pdf
+local_settings.cfg
+log.txt
 
 # C extensions
 *.so
