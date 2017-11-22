@@ -157,31 +157,31 @@ This will help you get up and running to test uploadTool. The uploadTool script 
 
 
 
-      python
-      >>> from archives_tools import aspace as AS
-      >>> AS.setURL("http://localhost:8089")
-      URL path updated
-      >>> AS.setUser("admin")
-      User updated
-      >>> AS.setPassword("admin")
-      Password updated
-      >>> session = AS.getSession()
-      ASpace Connection Successful
+		python
+		>>> from archives_tools import aspace as AS
+		>>> AS.setURL("http://localhost:8089")
+		URL path updated
+		>>> AS.setUser("admin")
+		User updated
+		>>> AS.setPassword("admin")
+		Password updated
+		>>> session = AS.getSession()
+		ASpace Connection Successful
 
 5. Install other dependencies with pip
 
 
-
-      pip install -U wxPython
-      pip install configparser
-      pip install argparse
+		
+		pip install -U wxPython
+		pip install configparser
+		pip install argparse
 
 6. Clone the uploadTool repo
 
 
 
-      git clone https://github.com/UAlbanyArchives/uploadTool
-      cd uploadTool
+		git clone https://github.com/UAlbanyArchives/uploadTool
+		cd uploadTool
 
 7. Create a config file called local_settings.cfg in the uploadTool directory
 8. Enter config settings. `uploadDir` is a folder where packages will be sent. `delete_path` is a path where files are sent temporatily and deleted whenever `clearDeletedFiles.py` is scheduled. `repository` is the relvent ArchivesSpace repository id.
@@ -199,11 +199,12 @@ This will help you get up and running to test uploadTool. The uploadTool script 
 
 
 
-    3| $watcher.Path = "C:\PDF"
-     	...
-    10 |python C:\Users\me\uploadTool\uploadTool.py -p $Event.SourceEventArgs.FullPath
-      	...
-    13 |Add-content "C:\Users\me\uploadTool\log.txt" -value $logline
+			3| $watcher.Path = "C:\PDF"
+			...
+			10 |python C:\Users\me\uploadTool\uploadTool.py -p $Event.SourceEventArgs.FullPath
+			...
+			13 |Add-content "C:\Users\me\uploadTool\log.txt" -value $logline
+
 
 10. Run `monitor.ps1` in background on boot
 11. Schedule `clearDeletedFiles.py` whenever you want to clear the directory of deleted files
