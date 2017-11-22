@@ -227,22 +227,27 @@ def uploadFiles(args):
 					
 						#look for pdfs
 						pdfCount = 0
-						for pdfCheck in args.Files:
-							if pdfCheck.lower().endswith(".pdf"):
-								pdfCount += 1
+						if fileCount == 1:
+							if args.Files.lower().endswith(".pdf"):
+								pdfCount = 1
+						else:
+							for pdfCheck in args.Files:
+								if pdfCheck.lower().endswith(".pdf"):
+									pdfCount += 1
 								
 						if pdfCount > 0:
 							checkOCR(args, pdfCount, fileCount)					
 							
 							
-						print ("moving " +  args.Files +  " to " + recordDir)
 						if fileCount == 1:
+							print ("moving " +  args.Files +  " to " + recordDir)
 							fileExt = os.path.splitext(args.Files)[1]
 							shutil.move(args.Files, recordDir)
 							os.rename(os.path.join(recordDir, os.path.basename(args.Files)), os.path.join(recordDir, filename + fileExt))
 						else:
 							fileNumber = 0
 							for item in args.Files:
+								print ("moving " +  item +  " to " + recordDir)
 								fileNumber += 1
 								fileExt = os.path.splitext(item)[1]
 								shutil.move(item, recordDir)
