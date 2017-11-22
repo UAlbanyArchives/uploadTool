@@ -1,0 +1,3 @@
+argparse
+configparser
+-e git+https://github.com/UAlbanyArchives/archives_tools

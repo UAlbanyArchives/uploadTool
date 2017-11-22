@@ -6,6 +6,8 @@ __pycache__/
 test.pdf
 local_settings.cfg
 log.txt
+deleted_files
+deleted_files/*
 
 # C extensions
 *.so

@@ -1,15 +1,15 @@
 ### SET FOLDER TO WATCH + FILES TO WATCH + SUBFOLDERS YES/NO
     $watcher = New-Object System.IO.FileSystemWatcher
-    $watcher.Path = "C:\Users\gw234478\Desktop\testDir"
+    $watcher.Path = "C:\PDF"
     $watcher.Filter = "*.*"
     $watcher.IncludeSubdirectories = $true
     $watcher.EnableRaisingEvents = $true  
 
 	### EVENTS TO BE WATCHED 
 		Register-ObjectEvent $watcher "Created" -Action {
-			python C:\Projects\uploadTool\uploadTool.py -p $Event.SourceEventArgs.FullPath
+			python C:\Users\me\uploadTool\uploadTool.py -p $Event.SourceEventArgs.FullPath
 			$changeType = $Event.SourceEventArgs.ChangeType
 			$logline = "$(Get-Date), $changeType, $path"
-			Add-content "C:\Projects\uploadTool\log.txt" -value $logline
+			Add-content "C:\Users\me\uploadTool\log.txt" -value $logline
 		}
 		while ($true) {sleep 1}
