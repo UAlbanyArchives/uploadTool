@@ -7,9 +7,9 @@
 
 	### EVENTS TO BE WATCHED 
 		Register-ObjectEvent $watcher "Created" -Action {
-			python C:\Users\me\uploadTool\uploadTool.py -p $Event.SourceEventArgs.FullPath
+			python C:\Users\spestudent\uploadTool\uploadTool.py -p $Event.SourceEventArgs.FullPath
 			$changeType = $Event.SourceEventArgs.ChangeType
 			$logline = "$(Get-Date), $changeType, $path"
-			Add-content "C:\Users\me\uploadTool\log.txt" -value $logline
+			Add-content "C:\Users\spestudent\uploadTool\log.txt" -value $logline
 		}
 		while ($true) {sleep 1}

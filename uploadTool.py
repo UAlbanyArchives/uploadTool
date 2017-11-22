@@ -48,7 +48,7 @@ def deleteFile(fileCount, files):
 		if fileCount == 1:
 			dupFiles(files, delete_path, files, 1)
 		else:
-			for file in files:
+			for file in files.split(" "):
 				dupFiles(file, delete_path, file, 1)
 				
 					
@@ -94,7 +94,7 @@ def saveAs(fileCount, files):
 			output_path = folderDlg.GetPath()
 			if not os.path.isdir(output_path):
 				os.makedirs(output_path)
-			for file in files:
+			for file in files.split(" "):
 				print ("Saving " + file + " to " + output_path)
 				shutil.move(file, output_path)
 				if os.name == "nt":
@@ -128,8 +128,7 @@ def checkOCR(args, pdfCount, fileCount):
 		else:
 			for openFile in args.Files.split(" "):
 				if openFile.lower().endswith(".pdf"):
-					openCmd = ("open " + openFile)
-					openFile = Popen(openCmd, shell=True, stdout=PIPE, stderr=PIPE)
+					openFile = Popen(openFile, shell=True, stdout=PIPE, stderr=PIPE)
 					stdout, stderr = openFile.communicate()
 		checkOCR(args, pdfCount, fileCount)
 	else:
@@ -241,7 +240,7 @@ def uploadFiles(args):
 								fileNumber += 1
 								fileExt = os.path.splitext(item)[1]
 								shutil.move(item, recordDir)
-								os.rename(os.path.join(recordDir, os.path.basename(item)), os.path.join(recordDir, filename + fileExt))
+								os.rename(os.path.join(recordDir, os.path.basename(item)), os.path.join(recordDir, filename + "-" + str(fileNumber) + fileExt))
 								
 						#run bulk_extractor
 						print ("running bulk_extractor.exe")
@@ -268,7 +267,14 @@ def uploadFiles(args):
 
 
 #run uploadTool
-uploadFiles(args)
+if os.path.isdir(args.Files):
+	fileList = []
+	for subFile in os.listdir(args.Files):
+		fileList.append(os.path.join(args.Files, subFile))
+	args.Files = " ".join(fileList)
+	uploadFiles(args)
+else:
+	uploadFiles(args)
 
 app.MainLoop()
 
