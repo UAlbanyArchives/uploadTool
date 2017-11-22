@@ -126,7 +126,7 @@ def checkOCR(args, pdfCount, fileCount):
 			if len(stderr) > 0:
 				print (stderr)
 		else:
-			for openFile in args.Files.split(" "):
+			for openFile in args.Files:
 				if openFile.lower().endswith(".pdf"):
 					openFile = Popen(openFile, shell=True, stdout=PIPE, stderr=PIPE)
 					stdout, stderr = openFile.communicate()
@@ -139,9 +139,15 @@ def uploadFiles(args):
 						
 	fileCount = 0
 	fileCheck = True
-	for file in args.Files.split(" "):
-		fileCount += 1
-		if not os.path.isfile(file):
+	if isinstance(args.Files, list):
+		for file in args.Files:
+			#print (file)
+			fileCount += 1
+			if not os.path.isfile(file):
+				fileCheck = False
+	else:
+		fileCount = 1
+		if not os.path.isfile(args.Files):
 			fileCheck = False
 
 	if not fileCheck == True:
@@ -158,7 +164,7 @@ def uploadFiles(args):
 				if len(stderr) > 0:
 					print (stderr)
 			else:
-				for openFile in args.Files.split(" "):
+				for openFile in args.Files:
 					openCmd = ("open " + openFile)
 					openFile = Popen(openCmd, shell=True, stdout=PIPE, stderr=PIPE)
 					stdout, stderr = openFile.communicate()
@@ -221,7 +227,7 @@ def uploadFiles(args):
 					
 						#look for pdfs
 						pdfCount = 0
-						for pdfCheck in args.Files.split(" "):
+						for pdfCheck in args.Files:
 							if pdfCheck.lower().endswith(".pdf"):
 								pdfCount += 1
 								
@@ -236,7 +242,7 @@ def uploadFiles(args):
 							os.rename(os.path.join(recordDir, os.path.basename(args.Files)), os.path.join(recordDir, filename + fileExt))
 						else:
 							fileNumber = 0
-							for item in args.Files.split(" "):
+							for item in args.Files:
 								fileNumber += 1
 								fileExt = os.path.splitext(item)[1]
 								shutil.move(item, recordDir)
@@ -271,7 +277,7 @@ if os.path.isdir(args.Files):
 	fileList = []
 	for subFile in os.listdir(args.Files):
 		fileList.append(os.path.join(args.Files, subFile))
-	args.Files = " ".join(fileList)
+	args.Files = fileList
 	uploadFiles(args)
 else:
 	uploadFiles(args)
