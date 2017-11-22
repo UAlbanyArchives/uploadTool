@@ -153,7 +153,8 @@ This will help you get up and running to test uploadTool. The uploadTool script 
 		python setup.py install
 
 
-3. Enter ArchivesSpace credentials with Python prompt
+4. Enter ArchivesSpace credentials with Python prompt
+
 
 
       python
@@ -167,21 +168,23 @@ This will help you get up and running to test uploadTool. The uploadTool script 
       >>> session = AS.getSession()
       ASpace Connection Successful
 
-4. Install other dependencies with pip
+5. Install other dependencies with pip
+
 
 
       pip install -U wxPython
       pip install configparser
       pip install argparse
 
-5. Clone the uploadTool repo
+6. Clone the uploadTool repo
+
 
 
       git clone https://github.com/UAlbanyArchives/uploadTool
       cd uploadTool
 
-6. Create a config file called local_settings.cfg in the uploadTool directory
-7. Enter config settings. `uploadDir` is a folder where packages will be sent. `delete_path` is a path where files are sent temporatily and deleted whenever `clearDeletedFiles.py` is scheduled. `repository` is the relvent ArchivesSpace repository id.
+7. Create a config file called local_settings.cfg in the uploadTool directory
+8. Enter config settings. `uploadDir` is a folder where packages will be sent. `delete_path` is a path where files are sent temporatily and deleted whenever `clearDeletedFiles.py` is scheduled. `repository` is the relvent ArchivesSpace repository id.
 
 
         [uploadTool]
@@ -189,10 +192,11 @@ This will help you get up and running to test uploadTool. The uploadTool script 
         delete_path:C:\Users\me\deleted_files
         repository:2
 
-8. Edit `monitor.ps1` to point to uploadTool, and directory to watch for new files
+9. Edit `monitor.ps1` to point to uploadTool, and directory to watch for new files
   * line 3 is directory to be watched for new files
   * line 10 is command to run uploadTool, so make sure its pointing to the uploadTool directory
   * line 13 is the path to a log file
+
 
 
     3| $watcher.Path = "C:\PDF"
@@ -201,9 +205,9 @@ This will help you get up and running to test uploadTool. The uploadTool script 
       	...
     13 |Add-content "C:\Users\me\uploadTool\log.txt" -value $logline
 
-9. Run `monitor.ps1` in background on boot
-10. Schedule `clearDeletedFiles.py` whenever you want to clear the directory of deleted files
-11. Edit registry to add a right-click to upload files not sent to watched directory
+10. Run `monitor.ps1` in background on boot
+11. Schedule `clearDeletedFiles.py` whenever you want to clear the directory of deleted files
+12. Edit registry to add a right-click to upload files not sent to watched directory
     * command is `python C:\[path]\uploadTool.py [files]`
 
 
