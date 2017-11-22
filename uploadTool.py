@@ -57,11 +57,17 @@ def saveAs(fileCount, files):
 			wildcard = "JPG (*.jpg)|*.jpeg"
 		else:
 			wildcard = "*.*"
-		saveDlg = wx.FileDialog(None, message="Save File as ...", defaultDir="", defaultFile="", wildcard=wildcard, style=wx.SAVE|wx.OVERWRITE_PROMPT)
+		saveDlg = wx.FileDialog(None, message="Save File as ...", defaultDir="", defaultFile="", wildcard=wildcard, style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
 		if saveDlg.ShowModal() == wx.ID_OK:
 			output_path = saveDlg.GetPath()
 			print ("Saving " + files + " to " + output_path)
 			shutil.move(files, output_path)
+			if os.name == "nt":
+				openDirCmd = "start " + os.path.dirname(output_path)
+			else:
+				openDirCmd = "open " + os.path.dirname(output_path)
+			openDir = Popen(openDirCmd, shell=True, stdout=PIPE, stderr=PIPE)
+			stdout, stderr = openDir.communicate()
 		else:
 			startOver = wx.MessageDialog(None, "Do you want to start over?", 'UploadTool', wx.YES_NO | wx.YES_DEFAULT | wx.ICON_INFORMATION | wx.STAY_ON_TOP)
 			if startOver.ShowModal() == wx.ID_YES:
@@ -80,6 +86,10 @@ def saveAs(fileCount, files):
 			for file in files:
 				print ("Saving " + file + " to " + output_path)
 				shutil.move(file, output_path)
+				if os.name == "nt":
+					openDirCmd = "explorer " + output_path
+					openDir = Popen(openDirCmd, shell=True, stdout=PIPE, stderr=PIPE)
+					stdout, stderr = openDir.communicate()
 		else:
 			startOver = wx.MessageDialog(None, "Do you want to start over?", 'UploadTool', wx.YES_NO | wx.YES_DEFAULT | wx.ICON_INFORMATION | wx.STAY_ON_TOP)
 			if startOver.ShowModal() == wx.ID_YES:
@@ -212,13 +222,15 @@ def uploadFiles(args):
 						print ("moving " +  args.Files +  " to " + recordDir)
 						if fileCount == 1:
 							fileExt = os.path.splitext(args.Files)[1]
-							os.rename(args.Files, os.path.join(recordDir, filename + fileExt))
+							shutil.move(args.Files, recordDir)
+							os.rename(os.path.join(recordDir, os.path.basename(args.Files)), os.path.join(recordDir, filename + fileExt))
 						else:
 							fileNumber = 0
 							for item in args.Files.split(" "):
 								fileNumber += 1
 								fileExt = os.path.splitext(item)[1]
-								os.rename(item, os.path.join(recordDir, filename + fileExt))
+								shutil.move(item, recordDir)
+								os.rename(os.path.join(recordDir, os.path.basename(item)), os.path.join(recordDir, filename + fileExt))
 								
 						#run bulk_extractor
 						print ("running bulk_extractor.exe")
