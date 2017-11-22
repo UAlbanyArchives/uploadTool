@@ -30,6 +30,15 @@ app = wx.App(False)
 
 
 def deleteFile(fileCount, files):
+	def dupFiles(oldName, movePath, newName, count):
+		#print ("trying " + newName)
+		if not os.path.exists(os.path.join(movePath, os.path.basename(newName))):
+			shutil.move(oldName, os.path.join(movePath, os.path.basename(newName)))
+		else:
+			rootName, fileExt = os.path.splitext(os.path.basename(oldName))
+			nextName = os.path.join(os.path.dirname(oldName), rootName + " [" + str(count) + "]" + fileExt)
+			dupFiles(oldName, movePath, nextName, count + 1)
+		
 	if fileCount == 1:
 		deleteMsg = "Do you want to delete this file?"
 	else:
@@ -37,10 +46,12 @@ def deleteFile(fileCount, files):
 	askDelete = wx.MessageDialog(None, deleteMsg, 'UploadTool', wx.YES_NO | wx.YES_DEFAULT | wx.ICON_WARNING | wx.STAY_ON_TOP)
 	if askDelete.ShowModal() == wx.ID_YES:
 		if fileCount == 1:
-			shutil.move(files, delete_path)
+			dupFiles(files, delete_path, files, 1)
 		else:
 			for file in files:
-				shutil.move(file, delete_path)
+				dupFiles(file, delete_path, file, 1)
+				
+					
 	else:
 		sys.exit()
 
