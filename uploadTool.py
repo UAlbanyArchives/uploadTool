@@ -48,8 +48,12 @@ def deleteFile(fileCount, files):
 		if fileCount == 1:
 			dupFiles(files, delete_path, files, 1)
 		else:
-			for file in files.split(" "):
-				dupFiles(file, delete_path, file, 1)
+			if isinstance(files, list):
+				for file in files:
+					dupFiles(file, delete_path, file, 1)
+			else:
+				for file in files.split(" "):
+					dupFiles(file, delete_path, file, 1)
 				
 					
 	else:
