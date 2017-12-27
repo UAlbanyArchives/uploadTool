@@ -6,7 +6,7 @@
     $watcher.EnableRaisingEvents = $true  
 
 	### EVENTS TO BE WATCHED 
-		Register-ObjectEvent $watcher "Created" -Action {
+		Register-ObjectEvent $watcher Created -Action {
 			python C:\Users\spestudent\uploadTool\uploadTool.py -p $Event.SourceEventArgs.FullPath
 			$changeType = $Event.SourceEventArgs.ChangeType
 			$logline = "$(Get-Date), $changeType, $path"
